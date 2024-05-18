@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <title>Генератор времени для дискорда</title>
+  <!-- <link rel="shortcut icon" type="image/jpg" href="/favicon.png"/> -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌏</text></svg>">
+
+  <meta name="description" content="Создание таймеров для встраивания в Discord"/>
+  <link rel="stylesheet" href="index.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Sen:wght@700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+	<meta property="og:title" content="Relative timestamp generator" />
+	<meta property="og:type" content="Relative timestamp generator" />
+	<meta property="og:url" content="https://discordtimestampgenerator.netlify.app/" />
+	<meta property="og:image" content="https://discordtimestampgenerator.netlify.app/banner.png" />
+	<meta property="og:description" content="Generate timers for use in Discord!" />
+	<meta name="author" content="Dot32">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-XZX004NRR7"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-XZX004NRR7');
+	</script>
+
+</head>
+<body>
+	<main>
+		<br class="pc">
+		<div>
+			<!-- HTML starts here -->
+			<div id="copy-banner" class="copy-banner">Copied to clipboard</div>
+			<h1>Генератор текста со временим</h1>
+
+			<p>Создайте временную метку, которая автоматически отсчитывает время.</p>
+			<img src="example.png" height=81 alt="Your birthday is in [14 days]">
+			<p>Каждый день, час и минута эта маленькая вставка будет вести обратный отсчет для вас.! </p>
+			<p class="pc"> Щелкните правой кнопкой мыши, чтобы вычесть время (например, -2 дня преобразуются в «2 дня назад»).)</p>
+
+			<div class=highlighted>
+				<h2>Select the 
+					<select id="mode">
+						<option value="timeframe">timeframe</option>
+						<option value="date">date</option>
+					</select>
+			      	</h2>
+
+				<div oncontextmenu="return false;" class="relative" style="margin-bottom: 12px;"><!-- oncontextmenu="return false;" -->
+					<div class="button-container"><button class="minus minus-week">-</button><button id="weeks">0 weeks</button></button><button class="plus plus-week">+</button></div>
+					<div class="button-container"><button class="minus minus-day">-</button><button id="days">0 days</button></button><button class="plus plus-day">+</button></div>
+					<div class="button-container"><button class="minus minus-hour">-</button><button id="hours">0 hours</button></button><button class="plus plus-hour">+</button></div>
+					<div class="button-container"><button class="minus minus-minute">-</button><button id="minutes">0 minutes</button></button><button class="plus plus-minute">+</button></div>
+
+					<button class="reset" onmousedown="reset()"><i class="material-icons">cached</i></button>
+				</div>
+				<div oncontextmenu="return false;" class="nonrelative" hidden=true style="margin-bottom: 12px;"><!-- oncontextmenu="return false;" -->
+					<p style="margin:0px;">Date selection is done in UTC time. Your timezone is UTC<span id=timezone>+8</span>.</p>
+					<div class="look-at-these-guns">
+					<div class="name"><span>Год</span><textarea id="year" placeholder="Year..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span>Месяц</span><textarea id="month" placeholder="Month..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span>День</span><textarea id="day" placeholder="Day..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<div class="name"><span></span>Час</span><textarea id="hour" placeholder="Hour..." rows=1 cols=3 onchange="timestampglobal()"></textarea><p id=fake-hour></p></div>
+					<div class="name"><span>Минута</span><textarea id="minute" placeholder="Minute..." rows=1 cols=7 onchange="timestampglobal()"></textarea></div>
+					<button class="reset" onmousedown="reset()"><i class="material-icons">cached</i></button>
+					</div>
+				</div>
+
+				<h2>...and copy paste this into a Discord message!</h2>
+				<div>
+					<p id=special>Javscript failed to load<noscript>: please enable it to run this app</noscript></p>
+
+					<button id="copy" onclick="copy('special')"><i class="material-icons">content_copy</i></span></button>
+				</div>
+				<details>
+					<summary>Advanced options</summary>
+					<div>
+						<p>Select format:
+						<select id="type">
+							<option value="coutdown">Обычный</option>
+							<option value="hour-short">Время</option>
+							<option value="hour-long">Много времени</option>
+							<option value="date-short">Дата</option>
+							<option value="date-long">Много дат</option>
+							<option value="date-time">Дата и Время</option>
+							<option value="date-week">Дата День недели</option>
+						</select> </p>
+					</div>
+					<!-- <div>
+						<p>Wrap time:</p>
+					</div> -->
+				</details>
+			</div>
+			<br/>
+			<!-- <div class=highlighted>
+				<h2>Want the 2024 New Years Countdown?</h2>
+				<p>Note it is adjusted for your timezone (UTC<span id="timezone">+8h</span>), and may not be accurate to others.</p>
+				<div>
+					<p id=special-new-years>&lt;t:1672531200:R&gt;</p>
+
+					<button id="copy" onclick="copy('special-new-years')"><i class="material-icons">content_copy</i></span></button>
+				</div>
+			</div> -->			
+
+			<script type="text/javascript" src="index.js"></script>
+		</div>
+		<br class="pc">
+		<!-- <br>
+		<div> 
+			<!-- <p>See Discord timezone generator</p> -->
+			<!-- <img src="https://cdn.discordapp.com/attachments/577832597686583310/1084327226092310568/Screenshot_2023-03-11_at_20.03.07.png">  -->
+		<!-- </div> -->
+		<!-- <br> -->
+	</main>
+</body>
+</html>
